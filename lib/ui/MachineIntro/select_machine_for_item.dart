@@ -90,8 +90,96 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
             },
           ),
         ],
-      ),
+      ),bottomNavigationBar: BottomNavigationBar(
+      backgroundColor: Colors.white,
+      selectedItemColor: Colors.orangeAccent,
+      unselectedItemColor: Colors.black,
+      showUnselectedLabels: true,
+      onTap: onTabTapped,
+      currentIndex: _currentIndex,
+      items: const [
+        BottomNavigationBarItem(
+          icon: Icon(Icons.home),
+          label: "Home",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.shopping_cart),
+
+          label: "My Cart",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.list),
+          label: "My Orders",
+        ),
+        BottomNavigationBarItem(
+          icon: Icon(Icons.person),
+          label: "Profile",
+        ),
+      ],
+    ),
     );
   }
+  int _currentIndex = 0;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Handle tap events for each tab
+    switch (index) {
+      case 0:
+        onHomeTapped();
+        break;
+      case 1:
+        onCartTapped();
+        break;
+      case 2:
+        onOrdersTapped();
+        break;
+      case 3:
+        onProfileTapped();
+        break;
+    }
+  }
+
+  void onHomeTapped() {
+
+  }
+
+  void onCartTapped() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Select a Machine"),
+          content: Text("Please select a machine before proceeding to the cart."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                onTabTapped(0);
+                Navigator.of(context).pop();
+
+
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onOrdersTapped() {
+    // Handle Orders icon tap
+    print("Orders tapped");
+  }
+
+  void onProfileTapped() {
+    // Handle Profile icon tap
+    print("Profile tapped");
+  }
+
 }
+
 

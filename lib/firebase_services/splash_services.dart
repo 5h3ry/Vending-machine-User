@@ -12,10 +12,7 @@ class SplashServices {
 
     await Timer(const Duration(seconds: 3), () {
       if (user != null) {
-        Navigator.pushReplacement(
-          context,
-          MaterialPageRoute(builder: (context) =>selectMachineForItems() ),//FabTabs(selectedIndex: 0)
-        );
+        Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>selectMachineForItems() ),);
       } else {
         Navigator.pushReplacement(
           context,

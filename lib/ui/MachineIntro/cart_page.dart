@@ -784,10 +784,14 @@ class _CartPageState extends State<CartPage> {
  */
 
 
+//commit
+
 
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
+import 'select_machine_for_item.dart';
 
 class CartPage extends StatefulWidget {
   final List<String> selectedIds;
@@ -939,8 +943,80 @@ class _CartPageState extends State<CartPage> {
           }
         },
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+
+            label: "My Cart",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: "My Orders",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+      ),
     );
+
+
   }
+  int _currentIndex = 1;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Handle tap events for each tab
+    switch (index) {
+      case 0:
+        onHomeTapped();
+        break;
+      case 1:
+        onCartTapped();
+        break;
+      case 2:
+        onOrdersTapped();
+        break;
+      case 3:
+        onProfileTapped();
+        break;
+    }
+  }
+
+  void onHomeTapped() {
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>selectMachineForItems() ),);
+
+  }
+
+  void onCartTapped() {
+
+  }
+
+  void onOrdersTapped() {
+    // Handle Orders icon tap
+    print("Orders tapped");
+  }
+
+  void onProfileTapped() {
+    // Handle Profile icon tap
+    print("Profile tapped");
+  }
+
 }
 
 

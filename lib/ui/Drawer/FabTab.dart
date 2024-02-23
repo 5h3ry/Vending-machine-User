@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:vending_app/ui/Pages/HomePage.dart';
 import 'package:vending_app/ui/Pages/MyCartPage.dart';
 import 'package:vending_app/ui/Pages/OrderHistoryPage.dart';
@@ -35,6 +36,8 @@ class _FabTabsState extends State<FabTabs> {
 
   final List<Widget> pages = [
     HomePage(),
+  //  selectMachineForItems(),
+
     MyCartPage(),
     OrderHistoryPage(),
     ProfilePage(),
