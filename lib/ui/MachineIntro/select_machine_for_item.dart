@@ -157,7 +157,9 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-                onTabTapped(0);
+
+                //onTabTapped(0);
+
                 Navigator.of(context).pop();
 
 

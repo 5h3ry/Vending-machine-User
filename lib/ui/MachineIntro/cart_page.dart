@@ -787,10 +787,11 @@ class _CartPageState extends State<CartPage> {
 //commit
 
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vending_app/ui/MachineIntro/orders.dart';
 import 'select_machine_for_item.dart';
 
 class CartPage extends StatefulWidget {
@@ -858,6 +859,7 @@ class _CartPageState extends State<CartPage> {
       appBar: AppBar(
         backgroundColor: Color(0xFFFFCC00),
         title: Text('Cart'),
+        centerTitle: true,
       ),
       body: FutureBuilder<List<Map<String, dynamic>>>(
         future: _selectedItemsFuture,
@@ -887,17 +889,20 @@ class _CartPageState extends State<CartPage> {
                        Map<String, dynamic> itemData = snapshot.data![index];
                        String itemId = widget.selectedIds[index];
                        int quantity = int.parse(itemQuantities[itemId] ?? '1');
+                       String imageUrl = itemData['imageUrl'] ?? '';
                       // double price = double.parse(itemData['price'].toString());
                       // double itemTotal = price * quantity;
                       // totalBill += itemTotal;
-                      return ListTile(
-                        title: Text(itemData['itemName']),
+                      /*
+                       return ListTile(
+                        leading: imageUrl.isNotEmpty ? Image.network(imageUrl) : SizedBox(),
+                        title: Text(itemData['itemName'],
+                            style: const TextStyle(fontWeight: FontWeight.bold,
+                                fontSize: 16),),
                         subtitle: Row(
                           children: <Widget>[
-                            Text('Price: ${itemData['price']}'),
-                            SizedBox(width: 20),
-                            Text('Quantity: ${itemData['quantity']}'),
-                            SizedBox(width: 20),
+                            Text('Price: ${itemData['price']}\nQuantity: ${itemData['quantity']}'),
+                            SizedBox(width: 60),
                             IconButton(
                               icon: Icon(Icons.remove),
                               onPressed: () {
@@ -927,6 +932,83 @@ class _CartPageState extends State<CartPage> {
                           ],
                         ),
                       );
+
+                       */
+                       return ListTile(
+                         contentPadding: EdgeInsets.all(10),
+                         leading: imageUrl.isNotEmpty ? ClipRRect(
+                           borderRadius: BorderRadius.circular(8.0),
+                           child: Image.network(
+                             imageUrl,
+                             fit: BoxFit.cover,
+                           ),
+                         ) : SizedBox(),
+                         title: Text(
+                           itemData['itemName'],
+                           style: TextStyle(fontWeight: FontWeight.bold, fontSize: 20),
+                         ),
+                         subtitle: Column(
+                           crossAxisAlignment: CrossAxisAlignment.start,
+                           children: [
+                             Text('Price: ${itemData['price']}'),
+                             Text('Quantity: ${itemData['quantity']}'),
+                           ],
+                         ),
+                         trailing: Container(
+                           width: 120,
+                           height: 40,
+                           padding: EdgeInsets.all(5),
+                           decoration: BoxDecoration(
+                             color: Colors.grey,
+                             borderRadius: BorderRadius.circular(13),
+                           ),
+                           child: Row(
+                             mainAxisAlignment: MainAxisAlignment.spaceAround,
+                             children: [
+                               IconButton(
+                                 icon: Icon(
+                                   CupertinoIcons.minus,
+                                   color: Colors.white,
+                                   size: 20,
+                                 ),
+                                 onPressed: () {
+                                   setState(() {
+                                     if (quantity > 1) {
+                                       quantity--;
+                                       itemQuantities[itemId] = quantity.toString();
+                                       _prefs.setString(itemId, quantity.toString());
+                                     }
+                                   });
+                                 },
+                               ),
+                               Text(
+                                 '$quantity',
+                                 style: TextStyle(
+                                   fontSize: 19,
+                                   color: Colors.white,
+                                   fontWeight: FontWeight.bold,
+                                 ),
+                               ),
+                               IconButton(
+                                 icon: Icon(
+                                   CupertinoIcons.plus,
+                                   color: Colors.white,
+                                   size: 20,
+                                 ),
+                                 onPressed: () {
+                                   setState(() {
+                                     if (quantity < int.parse(itemData['quantity'])) {
+                                       quantity++;
+                                       itemQuantities[itemId] = quantity.toString();
+                                       _prefs.setString(itemId, quantity.toString());
+                                     }
+                                   });
+                                 },
+                               ),
+                             ],
+                           ),
+                         ),
+                       );
                     },
                   ),
                 ),
@@ -1008,8 +1090,8 @@ class _CartPageState extends State<CartPage> {
   }
 
   void onOrdersTapped() {
-    // Handle Orders icon tap
-    print("Orders tapped");
+    //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>OrderPage(selectedIds: , machineId: widget.machineId,) ),);
+
   }
 
   void onProfileTapped() {
