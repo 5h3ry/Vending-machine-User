@@ -144,7 +144,7 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   }
 
   void onHomeTapped() {
-
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>selectMachineForItems() ),);
   }
 
   void onCartTapped() {

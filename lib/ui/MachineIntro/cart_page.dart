@@ -790,7 +790,7 @@ class _CartPageState extends State<CartPage> {
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
+import 'package:shared_preferences/shared_preferences.dart';
 import 'select_machine_for_item.dart';
 
 class CartPage extends StatefulWidget {
@@ -934,7 +934,7 @@ class _CartPageState extends State<CartPage> {
                 Container(
                   padding: EdgeInsets.all(10),
                   child: Text(
-                    'Total Bill: \$${totalBill.toStringAsFixed(2)}',
+                    'Total Bill:    Rs.${totalBill.toStringAsFixed(2)}',
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
