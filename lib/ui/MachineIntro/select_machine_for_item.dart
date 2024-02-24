@@ -158,8 +158,9 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
             TextButton(
               onPressed: () {
 
-                //onTabTapped(0);
-
+                setState(() {
+                  _currentIndex = 0;
+                });
                 Navigator.of(context).pop();
 
 
@@ -173,8 +174,31 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   }
 
   void onOrdersTapped() {
-    // Handle Orders icon tap
-    print("Orders tapped");
+    {
+      showDialog(
+        context: context,
+        builder: (BuildContext context) {
+          return AlertDialog(
+            title: Text("Select a Machine"),
+            content: Text("Please select a machine before proceeding to the Order."),
+            actions: <Widget>[
+              TextButton(
+                onPressed: () {
+
+                  setState(() {
+                    _currentIndex = 0;
+                  });
+                  Navigator.of(context).pop();
+
+
+                },
+                child: Text("OK"),
+              ),
+            ],
+          );
+        },
+      );
+    }
   }
 
   void onProfileTapped() {

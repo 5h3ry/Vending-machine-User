@@ -5,6 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vending_app/ui/MachineIntro/cart_page.dart';
 import 'select_machine_for_item.dart';
 
 class OrderPage extends StatefulWidget {
@@ -82,7 +83,7 @@ class _OrderPageState extends State<OrderPage> {
           } else if (snapshot.hasError) {
             return Center(child: Text('Error: ${snapshot.error}'));
           } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return Center(child: Text('No items found in the cart'));
+            return Center(child: Text('No Order placed yet'));
           } else {
             totalBill = 0.0;
             for (int index = 0; index < snapshot.data!.length; index++) {
@@ -223,6 +224,13 @@ class _OrderPageState extends State<OrderPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
+                  ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>OrderPage(selectedIds: widget.selectedIds , machineId: widget.machineId,)
+                    ),);
+                  },
+                  child: Text('Pay'), // Text displayed on the button
+                ),
               ],
             );
           }
@@ -259,7 +267,7 @@ class _OrderPageState extends State<OrderPage> {
 
 
   }
-  int _currentIndex = 1;
+  int _currentIndex = 2;
 
   void onTabTapped(int index) {
     setState(() {
@@ -289,6 +297,8 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void onCartTapped() {
+    //Navigator.of(context).pop();
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>CartPage(selectedIds: widget.selectedIds , machineId: widget.machineId,) ),);
 
   }
 

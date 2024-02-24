@@ -1020,6 +1020,12 @@ class _CartPageState extends State<CartPage> {
                     style: TextStyle(fontSize: 20),
                   ),
                 ),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,MaterialPageRoute(builder: (context) =>OrderPage(selectedIds: widget.selectedIds , machineId: widget.machineId,) ),);
+                  },
+                  child: Text('Checkout'), // Text displayed on the button
+                ),
               ],
             );
           }
@@ -1090,7 +1096,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   void onOrdersTapped() {
-    //Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>OrderPage(selectedIds: , machineId: widget.machineId,) ),);
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>OrderPage(selectedIds: widget.selectedIds , machineId: widget.machineId,) ),);
 
   }
 

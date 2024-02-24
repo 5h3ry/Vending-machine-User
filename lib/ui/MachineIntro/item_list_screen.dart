@@ -407,7 +407,8 @@ class _ItemListScreenState extends State<ItemListScreen> {
       children: [
         IconButton(
           onPressed: () {
-            if (cartItemCount > 0) {
+           // if (cartItemCount > 0)
+            {
               Navigator.push(
                 context,
                 MaterialPageRoute(
@@ -415,11 +416,15 @@ class _ItemListScreenState extends State<ItemListScreen> {
                       selectedIds: selectedIds, machineId: widget.machineId),
                 ),
               );
-            } else {
+            }
+            /*
+            else {
               ScaffoldMessenger.of(context).showSnackBar(
                 SnackBar(content: Text('Your cart is empty!')),
               );
             }
+
+             */
           },
           icon: Icon(Icons.shopping_cart),
         ),
