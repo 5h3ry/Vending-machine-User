@@ -30,6 +30,7 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+
         backgroundColor: Color(0xffffcc00), // Set your desired color here
         automaticallyImplyLeading: true,
         title: const Text('Select Machine'),
