@@ -367,7 +367,7 @@ class _ItemListScreenState extends State<ItemListScreen> {
   void onHomeTapped() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => selectMachineForItems()),
+      MaterialPageRoute(builder: (context) => SelectMachineForItems()),
     );
   }
 

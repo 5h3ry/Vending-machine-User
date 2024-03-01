@@ -550,7 +550,7 @@ class _OrderPageState extends State<OrderPage> {
   void onHomeTapped() {
     Navigator.pushReplacement(
       context,
-      MaterialPageRoute(builder: (context) => selectMachineForItems()),
+      MaterialPageRoute(builder: (context) => SelectMachineForItems()),
     );
   }
 

@@ -44,7 +44,7 @@ class _LoginScreenState extends State<LoginScreen> {
       Utils().toastMessage(value.user!.email.toString());
       Navigator.push(
           // context, MaterialPageRoute(builder: (context) => FabTabs(selectedIndex: 0)));
-          context, MaterialPageRoute(builder: (context) => selectMachineForItems()));
+          context, MaterialPageRoute(builder: (context) => SelectMachineForItems()));
       setState(() {
         loading = false;
       });

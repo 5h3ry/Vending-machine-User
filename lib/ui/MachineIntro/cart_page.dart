@@ -1087,7 +1087,7 @@ class _CartPageState extends State<CartPage> {
   }
 
   void onHomeTapped() {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>selectMachineForItems() ),);
+    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>SelectMachineForItems() ),);
 
   }
 

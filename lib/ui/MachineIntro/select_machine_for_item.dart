@@ -1,4 +1,3 @@
-
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -6,21 +5,17 @@ import 'package:vending_app/ui/MachineIntro/item_list_screen.dart';
 import 'package:vending_app/ui/auth/login_screen.dart';
 import 'package:vending_app/utils/utils.dart';
 
-class selectMachineForItems extends StatefulWidget {
-  const selectMachineForItems({super.key});
+class SelectMachineForItems extends StatefulWidget {
+  const SelectMachineForItems({Key? key});
 
   @override
-  State<selectMachineForItems> createState() => _selectMachineForItemsState();
+  State<SelectMachineForItems> createState() => _SelectMachineForItemsState();
 }
 
-class _selectMachineForItemsState extends State<selectMachineForItems> {
-
-  final auth=FirebaseAuth.instance;
-
-  final editController=TextEditingController();
-  final locationController=TextEditingController();
-  final fireStore =FirebaseFirestore.instance.collection('Machines').snapshots();
-  CollectionReference ref =FirebaseFirestore.instance.collection('Machines');
+class _SelectMachineForItemsState extends State<SelectMachineForItems> {
+  final auth = FirebaseAuth.instance;
+  final searchController = TextEditingController();
+  final fireStore = FirebaseFirestore.instance.collection('Machines').snapshots();
 
   String getMachineId(DocumentSnapshot doc) {
     return doc['id'].toString();
@@ -30,14 +25,12 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-
-        backgroundColor: Color(0xffffcc00), // Set your desired color here
-        automaticallyImplyLeading: true,
+        backgroundColor: Color(0xffffcc00),
         title: const Text('Select Machine'),
-        //centerTitle: true,
+        centerTitle: true,
         actions: [
           IconButton(
-            onPressed: (){
+            onPressed: () {
               auth.signOut().then((value) {
                 Navigator.push(
                   context,
@@ -54,72 +47,130 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
       ),
       body: Column(
         children: [
+          const SizedBox(height: 20,),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: TextFormField(
+              controller: searchController,
+              decoration: const InputDecoration(
+                hintText: 'Search by item name',
+                border: OutlineInputBorder(),
+              ),
+              onChanged: (String value) {
+                setState(() {});
+              },
+            ),
+          ),
           const SizedBox(height: 10,),
-          StreamBuilder<QuerySnapshot>(
-            stream: fireStore,
-            builder: (BuildContext context,AsyncSnapshot<QuerySnapshot> snapshot){
-              if(snapshot.connectionState == ConnectionState.waiting)
-                return Center(child: CircularProgressIndicator());
-              //return CircularProgressIndicator();
-              if(snapshot.hasError)
-                return Text('Error');
-              if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-                return Center(child: Text('No data found'));
-              }
-              return  Expanded(
-                child: ListView.builder(
+          Expanded(
+            child: StreamBuilder<QuerySnapshot>(
+              stream: fireStore,
+              builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting)
+                  return Center(child: CircularProgressIndicator());
+
+                if (snapshot.hasError)
+                  return Text('Error');
+
+                if (!snapshot.hasData || snapshot.data!.docs.isEmpty)
+                  return Center(child: Text('No data found'));
+
+                return ListView.builder(
                   itemCount: snapshot.data!.docs.length,
-                  itemBuilder: (context,index) {
+                  itemBuilder: (context, index) {
+                    var machineDoc = snapshot.data!.docs[index];
+                    var machineId = getMachineId(machineDoc);
+                    var machineName = machineDoc['machineName'].toString();
+                    var location = machineDoc['location'].toString();
+                    var imageUrl = machineDoc['imageUrl'].toString();
+
+                    if (searchController.text.isNotEmpty) {
+                      var subcollectionQuery = FirebaseFirestore.instance
+                          .collection('Machines')
+                          .doc(machineDoc.id)
+                          .collection('items')
+                          .where('itemName', isGreaterThanOrEqualTo: searchController.text)
+                          .where('itemName', isLessThanOrEqualTo: searchController.text + '\uf8ff');
+                      return StreamBuilder<QuerySnapshot>(
+                        stream: subcollectionQuery.snapshots(),
+                        builder: (context, subSnapshot) {
+                          if (subSnapshot.connectionState == ConnectionState.waiting)
+                            return SizedBox.shrink(); // Hide the item if subcollection data is loading
+
+                          if (subSnapshot.hasError)
+                            return SizedBox.shrink(); // Hide the item if there's an error
+
+                          if (!subSnapshot.hasData || subSnapshot.data!.docs.isEmpty)
+                            return SizedBox.shrink(); // Hide the item if subcollection is empty
+
+                          // Show the item if subcollection has matching data
+                          return ListTile(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(builder: (context) => ItemListScreen(machineId: machineId)),
+                              );
+                            },
+                            title: Text(machineName),
+                            subtitle: Text('location: $location'),
+                            leading: imageUrl.isNotEmpty
+                                ? Image.network(imageUrl)
+                                : Placeholder(),
+                          );
+                        },
+                      );
+                    }
+
+                    // If search text is empty, show the item without checking subcollection
                     return ListTile(
                       onTap: () {
-                        String machineId = getMachineId(snapshot.data!.docs[index]);
                         Navigator.push(
                           context,
                           MaterialPageRoute(builder: (context) => ItemListScreen(machineId: machineId)),
                         );
                       },
-
-                      title: Text(snapshot.data!.docs[index]['machineName'].toString()),
-                      subtitle: Text('location: ${snapshot.data!.docs[index]['location'].toString()}'),
-                      leading: snapshot.data!.docs[index]['imageUrl'].toString().isNotEmpty // Conditionally display the image if URL is not empty
-                          ? Image.network(snapshot.data!.docs[index]['imageUrl'].toString()) // Display image from network URL
+                      title: Text(machineName),
+                      subtitle: Text('location: $location'),
+                      leading: imageUrl.isNotEmpty
+                          ? Image.network(imageUrl)
                           : Placeholder(),
                     );
                   },
-                ),
-              );
-            },
+                );
+              },
+            ),
           ),
         ],
-      ),bottomNavigationBar: BottomNavigationBar(
-      backgroundColor: Colors.white,
-      selectedItemColor: Colors.orangeAccent,
-      unselectedItemColor: Colors.black,
-      showUnselectedLabels: true,
-      onTap: onTabTapped,
-      currentIndex: _currentIndex,
-      items: const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: "Home",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.shopping_cart),
-
-          label: "My Cart",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.list),
-          label: "My Orders",
-        ),
-        BottomNavigationBarItem(
-          icon: Icon(Icons.person),
-          label: "Profile",
-        ),
-      ],
-    ),
+      ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "My Cart",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: "My Orders",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+      ),
     );
   }
+
   int _currentIndex = 0;
 
   void onTabTapped(int index) {
@@ -145,7 +196,7 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   }
 
   void onHomeTapped() {
-    Navigator.pushReplacement(context,MaterialPageRoute(builder: (context) =>selectMachineForItems() ),);
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectMachineForItems()));
   }
 
   void onCartTapped() {
@@ -158,13 +209,10 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
           actions: <Widget>[
             TextButton(
               onPressed: () {
-
                 setState(() {
                   _currentIndex = 0;
                 });
                 Navigator.of(context).pop();
-
-
               },
               child: Text("OK"),
             ),
@@ -175,38 +223,29 @@ class _selectMachineForItemsState extends State<selectMachineForItems> {
   }
 
   void onOrdersTapped() {
-    {
-      showDialog(
-        context: context,
-        builder: (BuildContext context) {
-          return AlertDialog(
-            title: Text("Select a Machine"),
-            content: Text("Please select a machine before proceeding to the Order."),
-            actions: <Widget>[
-              TextButton(
-                onPressed: () {
-
-                  setState(() {
-                    _currentIndex = 0;
-                  });
-                  Navigator.of(context).pop();
-
-
-                },
-                child: Text("OK"),
-              ),
-            ],
-          );
-        },
-      );
-    }
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Select a Machine"),
+          content: Text("Please select a machine before proceeding to the Order."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 0;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   void onProfileTapped() {
-    // Handle Profile icon tap
     print("Profile tapped");
   }
-
 }
-
-
