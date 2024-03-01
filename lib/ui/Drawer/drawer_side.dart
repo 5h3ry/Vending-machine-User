@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vending_app/ui/Drawer/FabTab.dart';
+import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:vending_app/ui/Pages/HomePage.dart';
 import 'package:vending_app/ui/Pages/MyCartPage.dart';
 import 'package:vending_app/ui/Pages/ProfilePage.dart';
@@ -98,21 +99,33 @@ class _DrawerSideState extends State<DrawerSide> {
               iconData: Icons.home_outlined,
               title: "Home",
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FabTabs(selectedIndex: 0),
-                  ),
-                );
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectMachineForItems()));
+
               },
             ),
             listTile(
               iconData: Icons.shopping_cart,
               title: "My Cart",
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FabTabs(selectedIndex: 1),
-                  ),
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Select a Machine"),
+                      content: Text("Please select a machine before proceeding to the cart."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            // setState(() {
+                            //   _currentIndex = 3;
+                            // });
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             ),
@@ -120,10 +133,25 @@ class _DrawerSideState extends State<DrawerSide> {
               iconData: Icons.shop_outlined,
               title: "My Orders",
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FabTabs(selectedIndex: 2),
-                  ),
+                showDialog(
+                  context: context,
+                  builder: (BuildContext context) {
+                    return AlertDialog(
+                      title: Text("Select a Machine"),
+                      content: Text("Please select a machine before proceeding to the Order."),
+                      actions: <Widget>[
+                        TextButton(
+                          onPressed: () {
+                            // setState(() {
+                            //   _currentIndex = 3;
+                            // });
+                            Navigator.of(context).pop();
+                          },
+                          child: Text("OK"),
+                        ),
+                      ],
+                    );
+                  },
                 );
               },
             ),
@@ -131,11 +159,7 @@ class _DrawerSideState extends State<DrawerSide> {
               iconData: Icons.person_outlined,
               title: "My Profile",
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => FabTabs(selectedIndex: 3),
-                  ),
-                );
+                Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
               },
             ),
             listTile(

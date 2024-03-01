@@ -330,9 +330,9 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vending_app/ui/MachineIntro/cart_page.dart';
-import 'package:vending_app/ui/MachineIntro/payment.dart';
 import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:qr_flutter/qr_flutter.dart';
+import 'package:vending_app/ui/Pages/ProfilePage.dart';
 
 class OrderPage extends StatefulWidget {
   final List<String> selectedIds;
@@ -572,8 +572,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void onProfileTapped() {
-    // Handle Profile icon tap
-    print("Profile tapped");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
   }
 
   void _generateQRCode(String machineId, Map<String, String> itemQuantities) {

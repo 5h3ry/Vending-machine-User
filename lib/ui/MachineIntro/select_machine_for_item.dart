@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:vending_app/ui/Drawer/drawer_side.dart';
 import 'package:vending_app/ui/MachineIntro/item_list_screen.dart';
+import 'package:vending_app/ui/Pages/ProfilePage.dart';
 import 'package:vending_app/ui/auth/login_screen.dart';
 import 'package:vending_app/utils/utils.dart';
 
@@ -45,6 +47,8 @@ class _SelectMachineForItemsState extends State<SelectMachineForItems> {
           const SizedBox(width: 10,),
         ],
       ),
+      drawer: DrawerSide(),
+
       body: Column(
         children: [
           const SizedBox(height: 20,),
@@ -89,8 +93,8 @@ class _SelectMachineForItemsState extends State<SelectMachineForItems> {
                           .collection('Machines')
                           .doc(machineDoc.id)
                           .collection('items')
-                          .where('itemName', isGreaterThanOrEqualTo: searchController.text)
-                          .where('itemName', isLessThanOrEqualTo: searchController.text + '\uf8ff');
+                          .where('itemName', isGreaterThanOrEqualTo: searchController.text.toUpperCase())
+                          .where('itemName', isLessThanOrEqualTo: searchController.text.toUpperCase() + '\uf8ff');
                       return StreamBuilder<QuerySnapshot>(
                         stream: subcollectionQuery.snapshots(),
                         builder: (context, subSnapshot) {
@@ -246,6 +250,6 @@ class _SelectMachineForItemsState extends State<SelectMachineForItems> {
   }
 
   void onProfileTapped() {
-    print("Profile tapped");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
   }
 }

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vending_app/ui/Drawer/FabTab.dart';
+import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:vending_app/ui/Pages/AboutUs.dart';
 import 'package:vending_app/ui/Pages/OrderHistoryPage.dart';
 import 'package:vending_app/ui/auth/login_screen.dart';
@@ -37,7 +38,7 @@ class _ProfilePageState extends State<ProfilePage> {
           Column(
             children: [
               Container(
-                height: 100,
+                height: 60,
                 color: scaffoldBackgroundColor,
               ),
               Container(
@@ -72,13 +73,27 @@ class _ProfilePageState extends State<ProfilePage> {
                     listTile(
                       icon: Icons.shop_outlined,
                       title: "My Orders",
-                      backgroundColor: Colors.white,
                       onTap: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(builder: (context) => FabTabs(selectedIndex: 2)),
+                        showDialog(
+                          context: context,
+                          builder: (BuildContext context) {
+                            return AlertDialog(
+                              title: Text("Select a Machine"),
+                              content: Text("Please select a machine before proceeding to the Order."),
+                              actions: <Widget>[
+                                TextButton(
+                                  onPressed: () {
+                                    // setState(() {
+                                    //   _currentIndex = 3;
+                                    // });
+                                    Navigator.of(context).pop();
+                                  },
+                                  child: Text("OK"),
+                                ),
+                              ],
+                            );
+                          },
                         );
-
                       },
                     ),
                     listTile(
@@ -120,7 +135,7 @@ class _ProfilePageState extends State<ProfilePage> {
             ],
           ),
           Padding(
-            padding: const EdgeInsets.only(top: 40, left: 30),
+            padding: const EdgeInsets.only(top: 25, left: 30),
             child: CircleAvatar(
               radius: 50,
               backgroundColor: primaryColor,
@@ -133,8 +148,114 @@ class _ProfilePageState extends State<ProfilePage> {
           ),
         ],
       ),
+      bottomNavigationBar: BottomNavigationBar(
+        backgroundColor: Colors.white,
+        selectedItemColor: Colors.orangeAccent,
+        unselectedItemColor: Colors.black,
+        showUnselectedLabels: true,
+        onTap: onTabTapped,
+        currentIndex: _currentIndex,
+        items: const [
+          BottomNavigationBarItem(
+            icon: Icon(Icons.home),
+            label: "Home",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.shopping_cart),
+            label: "My Cart",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.list),
+            label: "My Orders",
+          ),
+          BottomNavigationBarItem(
+            icon: Icon(Icons.person),
+            label: "Profile",
+          ),
+        ],
+      ),
+    );
+
+  }
+  int _currentIndex = 3;
+
+  void onTabTapped(int index) {
+    setState(() {
+      _currentIndex = index;
+    });
+
+    // Handle tap events for each tab
+    switch (index) {
+      case 0:
+        onHomeTapped();
+        break;
+      case 1:
+        onCartTapped();
+        break;
+      case 2:
+        onOrdersTapped();
+        break;
+      case 3:
+        onProfileTapped();
+        break;
+    }
+  }
+
+  void onHomeTapped() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => SelectMachineForItems()));
+  }
+
+  void onCartTapped() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Select a Machine"),
+          content: Text("Please select a machine before proceeding to the cart."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
     );
   }
+
+  void onOrdersTapped() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text("Select a Machine"),
+          content: Text("Please select a machine before proceeding to the Order."),
+          actions: <Widget>[
+            TextButton(
+              onPressed: () {
+                setState(() {
+                  _currentIndex = 3;
+                });
+                Navigator.of(context).pop();
+              },
+              child: Text("OK"),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void onProfileTapped() {
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+  }
+
+
 
   Widget listTile({
     IconData? icon,

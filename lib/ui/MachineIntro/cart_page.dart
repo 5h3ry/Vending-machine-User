@@ -792,6 +792,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:vending_app/ui/MachineIntro/orders.dart';
+import 'package:vending_app/ui/Pages/ProfilePage.dart';
 import 'select_machine_for_item.dart';
 
 class CartPage extends StatefulWidget {
@@ -1101,8 +1102,8 @@ class _CartPageState extends State<CartPage> {
   }
 
   void onProfileTapped() {
-    // Handle Profile icon tap
-    print("Profile tapped");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+
   }
 
 }

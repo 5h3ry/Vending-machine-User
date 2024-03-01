@@ -238,6 +238,7 @@ import 'package:vending_app/ui/MachineIntro/cart_page.dart';
 import 'package:vending_app/ui/MachineIntro/orders.dart';
 import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:vending_app/ui/Pages/ProfilePage.dart';
 
 class ItemListScreen extends StatefulWidget {
   final String machineId;
@@ -398,8 +399,8 @@ class _ItemListScreenState extends State<ItemListScreen> {
   }
 
   void onProfileTapped() {
-    // Handle Profile icon tap
-    print("Profile tapped");
+    Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => ProfilePage()));
+
   }
 
   Widget buildCartIcon() {

@@ -1,6 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:vending_app/ui/Drawer/FabTab.dart';
+import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
 import 'package:vending_app/ui/posts/post_screen.dart';
 import '../../utils/utils.dart';
 import '../../widgets/round_button.dart';
@@ -54,7 +55,7 @@ class _VerifyCodeScreenState extends State<VerifyCodeScreen> {
                     Navigator.push(
                         context,
                         MaterialPageRoute(
-                            builder: (context) => FabTabs(selectedIndex: 0)));
+                            builder: (context) => SelectMachineForItems()));
                   } catch (e) {
                     setState(() {
                       loading = false;
