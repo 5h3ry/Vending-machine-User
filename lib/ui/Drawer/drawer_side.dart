@@ -1,8 +1,6 @@
+
 import 'package:flutter/material.dart';
-import 'package:vending_app/ui/Drawer/FabTab.dart';
 import 'package:vending_app/ui/MachineIntro/select_machine_for_item.dart';
-import 'package:vending_app/ui/Pages/HomePage.dart';
-import 'package:vending_app/ui/Pages/MyCartPage.dart';
 import 'package:vending_app/ui/Pages/ProfilePage.dart';
 
 class DrawerSide extends StatefulWidget {
@@ -10,6 +8,7 @@ class DrawerSide extends StatefulWidget {
 
   @override
   _DrawerSideState createState() => _DrawerSideState();
+
 }
 
 class _DrawerSideState extends State<DrawerSide> {
@@ -49,7 +48,8 @@ class _DrawerSideState extends State<DrawerSide> {
     // Replace the following lines with your actual user data retrieval logic
     var userData = UserData(
       userName: "Our Vending",
-      userEmail: "ourvending.com",
+      userEmail: "SAVM@gmail.com",
+
       userImage: "assets/vending.png", // Change to your local asset path
     );
 
@@ -227,3 +227,4 @@ class UserData {
     required this.userImage,
   });
 }
+

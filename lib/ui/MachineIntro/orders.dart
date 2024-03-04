@@ -567,8 +567,7 @@ class _OrderPageState extends State<OrderPage> {
   }
 
   void onOrdersTapped() {
-    // Handle Orders icon tap
-    print("Orders tapped");
+
   }
 
   void onProfileTapped() {

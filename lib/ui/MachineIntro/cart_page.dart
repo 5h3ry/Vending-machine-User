@@ -956,7 +956,7 @@ class _CartPageState extends State<CartPage> {
                            ],
                          ),
                          trailing: Container(
-                           width: 120,
+                           width: 130,
                            height: 40,
                            padding: EdgeInsets.all(5),
                            decoration: BoxDecoration(
